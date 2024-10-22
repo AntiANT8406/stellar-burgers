@@ -5,18 +5,19 @@ import { getIngredientsApi } from '@api';
 
 interface IngredientsState {
   ingredients: TIngredient[];
-  isLoading: boolean;
+  isIngredientsLoading: boolean;
   error: string | null;
 }
 
 const initialState: IngredientsState = {
   ingredients: [],
-  isLoading: false,
+  isIngredientsLoading: false,
   error: null
 };
 
-const getIngredients = createAsyncThunk('ingredients/getAll', async () =>
-  getIngredientsApi()
+export const getIngredients = createAsyncThunk(
+  'ingredients/getAll',
+  getIngredientsApi
 );
 
 const ingredientsSlice = createSlice({
@@ -24,23 +25,23 @@ const ingredientsSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    getIngredientsSelector: (state) => state.ingredients
+    ingredientsSelector: (state) => state
   },
   extraReducers: (builder) => {
     builder
       .addCase(getIngredients.pending, (state) => {
-        state.isLoading = true;
+        state.isIngredientsLoading = true;
       })
       .addCase(getIngredients.fulfilled, (state, action) => {
         state.ingredients = action.payload;
-        state.isLoading = false;
+        state.isIngredientsLoading = false;
       })
       .addCase(getIngredients.rejected, (state, action) => {
         state.error = action.error.message || null;
-        state.isLoading = false;
+        state.isIngredientsLoading = false;
       });
   }
 });
 
-export const reducer = ingredientsSlice.reducer;
-export const { getIngredientsSelector } = ingredientsSlice.selectors;
+export const ingredientsReducer = ingredientsSlice.reducer;
+export const { ingredientsSelector } = ingredientsSlice.selectors;

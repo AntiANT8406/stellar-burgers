@@ -12,35 +12,44 @@ import {
 import '../../index.css';
 import styles from './app.module.css';
 import { Route, Routes } from 'react-router-dom';
-
+import { useEffect } from 'react';
+import { getIngredients } from '../../slices/ingredientSlice';
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
+import { useDispatch } from '../../services/store';
 
-const App = () => (
-  <div className={styles.app}>
-    <AppHeader />
-    <Routes>
-      <Route path='/' element={<ConstructorPage />} />
-      <Route path='/feed' element={<Feed />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      <Route path='/forgot-password' element={<ForgotPassword />} />
-      <Route path='/reset-password' element={<ResetPassword />} />
-      <Route path='/profile' element={<Profile />} />
-      <Route path='/profile/orders' element={<ProfileOrders />} />
-      <Route path='*' element={<NotFound404 />} />
+const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+  console.log('App');
+  return (
+    <div className={styles.app}>
+      <AppHeader />
+      <Routes>
+        <Route path='/' element={<ConstructorPage />} />
+        <Route path='/feed' element={<Feed />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile/orders' element={<ProfileOrders />} />
+        <Route path='*' element={<NotFound404 />} />
 
-      <Route
-        path='/ingredients/:id'
-        element={
-          <Modal title='Детали ингредиента' onClose={() => {}}>
-            <IngredientDetails />
-          </Modal>
-        }
-      />
-      {/* <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route
+          path='/ingredients/:id'
+          element={
+            <Modal title='Детали ингредиента' onClose={() => {}}>
+              <IngredientDetails />
+            </Modal>
+          }
+        />
+        {/* <Route path='/feed/:number' element={<OrderInfo />} />
       <Route path='/profile/orders/:id' element={<OrderInfo />} /> */}
-    </Routes>
-  </div>
-);
+      </Routes>
+    </div>
+  );
+};
 
 export default App;
