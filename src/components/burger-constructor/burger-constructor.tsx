@@ -1,24 +1,32 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useAppDispatch, useAppSelector } from '@store';
+import { burgerConstructor, orderMade, user } from '@slices';
+import { ProtectedRoute } from '../protected-route';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
-
-  const orderRequest = false;
-
-  const orderModalData = null;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [preloaderIsClosed, setPreloaderIsClosed] = useState(false);
+  const constructorItems = useAppSelector(burgerConstructor.selectCurrentItems);
+  const orderData = useAppSelector(burgerConstructor.selectOrderData);
+  const orderRequest = useAppSelector(orderMade.selectOrderRequest);
+  const orderModalData = useAppSelector(orderMade.selectOrderData);
+  const userData = useAppSelector(user.selectUser);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    !userData
+      ? navigate('/login')
+      : dispatch(orderMade.makeOrderThunk(orderData));
   };
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => {
+    setPreloaderIsClosed(true);
+    orderModalData && dispatch(orderMade.clearData());
+    orderModalData && dispatch(burgerConstructor.clearData());
+  };
 
   const price = useMemo(
     () =>
@@ -30,14 +38,13 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
-  return null;
-
   return (
     <BurgerConstructorUI
       price={price}
       orderRequest={orderRequest}
       constructorItems={constructorItems}
       orderModalData={orderModalData}
+      preloaderIsClosed={preloaderIsClosed}
       onOrderClick={onOrderClick}
       closeOrderModal={closeOrderModal}
     />
