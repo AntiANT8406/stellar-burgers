@@ -38,3 +38,8 @@ export type TUser = {
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';
+export enum IngredientType {
+  bun = 'bun',
+  sauce = 'sauce',
+  main = 'main'
+}
