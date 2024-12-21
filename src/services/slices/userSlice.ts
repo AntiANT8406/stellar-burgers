@@ -1,13 +1,13 @@
 import {
-  registerUserApi,
-  TRegisterData,
-  loginUserApi,
-  TLoginData,
   getUserApi,
-  updateUserApi,
-  logoutApi
+  loginUserApi,
+  logoutApi,
+  registerUserApi,
+  TLoginData,
+  TRegisterData,
+  updateUserApi
 } from '@api';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
@@ -35,10 +35,7 @@ export const updateUser = createAsyncThunk(
   async (user: Partial<TRegisterData>) => await updateUserApi(user)
 );
 
-export const logoutUser = createAsyncThunk(
-  'user/logoutUser',
-  async () => await logoutApi()
-);
+export const logoutUser = createAsyncThunk('user/logoutUser', logoutApi);
 
 type TUserState = {
   isAuthChecked: boolean;
