@@ -41,28 +41,6 @@ export const refreshToken = (): Promise<TRefreshResponse> =>
     return refreshData;
   });
 
-export const fetchWithRefresh = async <T>(
-  url: RequestInfo,
-  options: RequestInit
-) => {
-  try {
-    const res = await fetch(url, options);
-    return await checkResponse<T>(res);
-  } catch (err) {
-    if ((err as { message: string }).message === 'jwt expired') {
-      const refreshData = await refreshToken();
-      if (options.headers) {
-        (options.headers as { [key: string]: string }).authorization =
-          refreshData.accessToken;
-      }
-      const res = await fetch(url, options);
-      return await checkResponse<T>(res);
-    } else {
-      return Promise.reject(err);
-    }
-  }
-};
-
 export const requestWithRefresh = <T>(
   url: string,
   options?: RequestInit
@@ -97,10 +75,9 @@ type TOrdersResponse = TServerResponse<{
 export const getOrdersApi = () =>
   requestWithRefresh<TOrdersResponse>('/orders', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
+    headers: Object.assign(HEADERS_JSON, {
       authorization: getCookie('accessToken')
-    } as HeadersInit
+    }) as HeadersInit
   }).then((res) => res.orders);
 
 type TNewOrderResponse = TServerResponse<{
@@ -173,27 +150,24 @@ type TUserResponse = TServerResponse<{ user: TUser }>;
 
 export const getUserApi = () =>
   request<TUserResponse>('/auth/user', {
-    headers: {
+    headers: Object.assign(HEADERS_JSON, {
       authorization: getCookie('accessToken')
-    } as HeadersInit
+    }) as HeadersInit
   });
 
 export const updateUserApi = (user: Partial<TRegisterData>) =>
   request<TUserResponse>('/auth/user', {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
+    headers: Object.assign(HEADERS_JSON, {
       authorization: getCookie('accessToken')
-    } as HeadersInit,
+    }) as HeadersInit,
     body: JSON.stringify(user)
   });
 
 export const logoutApi = () =>
   request<TServerResponse<{}>>('/auth/logout', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-    },
+    headers: HEADERS_JSON,
     body: JSON.stringify({
       token: localStorage.getItem('refreshToken')
     })
