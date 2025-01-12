@@ -33,9 +33,9 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
           <p className='text text_type_main-default ml-2'>Лента заказов</p>
         </NavLink>
       </div>
-      <div className={styles.logo}>
+      <NavLink className={styles.logo} to='/'>
         <Logo className='' />
-      </div>
+      </NavLink>
       <NavLink
         className={({ isActive }) =>
           clsx(styles.link, isActive && styles.link_active)
