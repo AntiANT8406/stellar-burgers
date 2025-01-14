@@ -24,4 +24,15 @@ describe('BurgerConstructor', () => {
     cy.get('[data-cy="sauces-ingredients"]').contains('Добавить').click();
     cy.get('[data-cy="ingredients"]').contains('Ингридиент_04').should('exist');
   });
+
+  it('Проверка работы модального окна ингридиента', () => {
+    cy.get('[data-cy="mains-ingredients"]').contains('Ингридиент_02').click();
+    cy.get('[data-cy="modal"]').should('exist');
+    cy.get('[data-cy="modal"]').contains('Ингридиент_02').should('exist');
+    cy.get('[data-cy="modal-close"]').click();
+    cy.get('[data-cy="modal"]').should('not.exist');
+    cy.get('[data-cy="mains-ingredients"]').contains('Ингридиент_02').click();
+    cy.get('[data-cy="modal-overlay"').click(10, 10, { force: true });
+    cy.get('[data-cy="modal"]').should('not.exist');
+  });
 });
