@@ -1,4 +1,4 @@
-describe('BurgerConstructor', () => {
+describe('Проверка работы конструктора', () => {
   beforeEach(() => {
     cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' });
     cy.viewport(1920, 1080);
@@ -24,15 +24,40 @@ describe('BurgerConstructor', () => {
     cy.get('[data-cy="sauces-ingredients"]').contains('Добавить').click();
     cy.get('[data-cy="ingredients"]').contains('Ингридиент_04').should('exist');
   });
+});
 
-  it('Проверка работы модального окна ингридиента', () => {
+describe('Проверка работы модального окна ингридиента', () => {
+  beforeEach(() => {
+    cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' });
+    cy.viewport(1920, 1080);
+    cy.visit('http://localhost:4000');
     cy.get('[data-cy="mains-ingredients"]').contains('Ингридиент_02').click();
-    cy.get('[data-cy="modal"]').should('exist');
+  });
+  it('Проверка открытия модального окна ингридиента', () => {
+    cy.get('[data-cy="modal"]').should('be.visible');
     cy.get('[data-cy="modal"]').contains('Ингридиент_02').should('exist');
+  });
+  it('Проверка закрытия модального окна ингридиента по крестику', () => {
     cy.get('[data-cy="modal-close"]').click();
     cy.get('[data-cy="modal"]').should('not.exist');
-    cy.get('[data-cy="mains-ingredients"]').contains('Ингридиент_02').click();
+  });
+  it('Проверка закрытия модального окна ингридиента по оверлею', () => {
     cy.get('[data-cy="modal-overlay"').click(10, 10, { force: true });
     cy.get('[data-cy="modal"]').should('not.exist');
+  });
+});
+
+describe('Проверка оформления заказа', () => {
+  beforeEach(() => {
+    localStorage.setItem('token', 'token');
+    cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' });
+    cy.intercept('GET', '/api/auth/user', { fixture: 'user.json' });
+    cy.intercept('POST', '/api/orders', { fixture: 'order.json' });
+    cy.viewport(1920, 1080);
+    cy.visit('http://localhost:4000');
+  });
+
+  it('Проверка получения пользователя', () => {
+    cy.get('[data-cy="user"]').contains('testName').should('exist');
   });
 });
