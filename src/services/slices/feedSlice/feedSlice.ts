@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrdersData } from '@utils-types';
 import { getFeedsApi } from '@api';
 
-type TFeedState = TOrdersData & { success: boolean; isLoading: boolean };
+export type TFeedState = TOrdersData & { success: boolean; isLoading: boolean };
 
 const initialState: TFeedState = {
   isLoading: false,

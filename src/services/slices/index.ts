@@ -1,6 +1,6 @@
 export * as burgerConstructor from './burgerConstructorSlice';
-export * as ingredients from './ingredientsSlice';
-export * as feed from './feedSlice';
+export * as ingredients from './ingredientsSlice/ingredientsSlice';
+export * as feed from './feedSlice/feedSlice';
 export * as user from './userSlice';
 export * as userOrders from './userOrdersSlice';
 export * as orderModal from './orderModalSlice';
