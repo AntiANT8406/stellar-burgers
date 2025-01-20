@@ -70,8 +70,6 @@ const userSlice = createSlice({
       state.error = null;
       state.user = action.payload.user;
       state.isAuthChecked = true;
-      setCookie('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
     });
     builder.addCase(loginUser.pending, (state) => {
       state.error = null;
@@ -83,8 +81,6 @@ const userSlice = createSlice({
       state.error = null;
       state.user = action.payload.user;
       state.isAuthChecked = true;
-      setCookie('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
     });
     builder.addCase(getUser.pending, (state) => {
       state.error = null;
@@ -99,8 +95,6 @@ const userSlice = createSlice({
     });
     builder.addCase(logoutUser.fulfilled, (sate) => {
       sate.user = null;
-      deleteCookie('accessToken');
-      localStorage.removeItem('refreshToken');
     });
     builder.addCase(updateUser.pending, (state) => {
       state.error = null;

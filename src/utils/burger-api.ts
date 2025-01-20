@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from './cookie';
+import { getCookie, setCookie, deleteCookie } from './cookie';
 import { TIngredient, TOrder, TUser } from './types';
 
 const URL = process.env.BURGER_API_URL;
@@ -118,6 +118,10 @@ export const registerUserApi = (data: TRegisterData) =>
     method: 'POST',
     headers: HEADERS_JSON,
     body: JSON.stringify(data)
+  }).then((res) => {
+    localStorage.setItem('refreshToken', res.refreshToken);
+    setCookie('accessToken', res.accessToken);
+    return res;
   });
 
 export type TLoginData = {
@@ -130,6 +134,10 @@ export const loginUserApi = (data: TLoginData) =>
     method: 'POST',
     headers: HEADERS_JSON,
     body: JSON.stringify(data)
+  }).then((res) => {
+    localStorage.setItem('refreshToken', res.refreshToken);
+    setCookie('accessToken', res.accessToken);
+    return res;
   });
 
 export const forgotPasswordApi = (data: { email: string }) =>
@@ -171,4 +179,7 @@ export const logoutApi = () =>
     body: JSON.stringify({
       token: localStorage.getItem('refreshToken')
     })
+  }).then(() => {
+    localStorage.removeItem('refreshToken');
+    deleteCookie('accessToken');
   });
