@@ -7,12 +7,12 @@ export const getOrderModalThunk = createAsyncThunk(
   async (number: number) => await getOrderByNumberApi(number)
 );
 
-type TOrderModalState = {
+export type TOrderModalState = {
   isFetched: boolean;
   order: TOrder | null;
 };
 
-const initialState: TOrderModalState = {
+export const initialState: TOrderModalState = {
   isFetched: false,
   order: null
 };

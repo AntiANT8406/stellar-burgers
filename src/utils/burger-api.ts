@@ -80,7 +80,7 @@ export const getOrdersApi = () =>
     }) as HeadersInit
   }).then((res) => res.orders);
 
-type TNewOrderResponse = TServerResponse<{
+export type TNewOrderResponse = TServerResponse<{
   order: TOrder;
   name: string;
 }>;

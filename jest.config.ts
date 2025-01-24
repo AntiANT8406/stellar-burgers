@@ -93,7 +93,9 @@ const config: Config = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '^@utils-types$': path.resolve(__dirname, './src/utils/types'),
-    '^@api$': path.resolve(__dirname, './src/utils/burger-api')
+    '^@api$': path.resolve(__dirname, './src/utils/burger-api'),
+    '^@slices$': path.resolve(__dirname, './src/services/slices'),
+    '^@store$': path.resolve(__dirname, './src/services/store')
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

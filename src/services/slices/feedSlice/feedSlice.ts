@@ -4,7 +4,7 @@ import { getFeedsApi } from '@api';
 
 export type TFeedState = TOrdersData & { success: boolean; isLoading: boolean };
 
-const initialState: TFeedState = {
+export const initialState: TFeedState = {
   isLoading: false,
   success: false,
   orders: [],
