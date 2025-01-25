@@ -12,7 +12,7 @@ const selectors = {
   modalOverlay: 'modal-overlay',
   order: 'order',
   userName: 'user-name'
-}
+};
 
 describe('Проверка работы конструктора', () => {
   beforeEach(() => {
