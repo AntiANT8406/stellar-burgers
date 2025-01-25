@@ -8,7 +8,7 @@ import { burgerConstructor } from '@slices';
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
->(({ title, titleRef, ingredients }, ref) => {
+>(({ title, titleRef, ingredients, ...rest }, ref) => {
   const currentBun = useAppSelector(burgerConstructor.selectCurrentBun);
   const currentIngredients = useAppSelector(
     burgerConstructor.selectCurrentIngredients
@@ -36,6 +36,7 @@ export const IngredientsCategory = forwardRef<
       ingredients={ingredients}
       ingredientsCounters={ingredientsCounters}
       ref={ref}
+      {...rest}
     />
   );
 });

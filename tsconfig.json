@@ -29,5 +29,5 @@
       "@store": ["src/services/store.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "__tests___"]
 }
