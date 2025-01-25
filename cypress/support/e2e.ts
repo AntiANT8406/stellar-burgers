@@ -15,3 +15,23 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      dataCy(value: string): Chainable<JQuery<HTMLElement>>;
+      setFixtures(): Chainable<void>;
+    }
+  }
+}
+
+Cypress.Commands.add('dataCy', (selector, ...args) =>
+  cy.get(`[data-cy=${selector}]`, ...args)
+);
+
+Cypress.Commands.add('setFixtures', () => {
+  cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' });
+  cy.intercept('GET', '/api/auth/user', { fixture: 'user.json' });
+  cy.viewport(1920, 1080);
+  cy.visit('/');
+});
