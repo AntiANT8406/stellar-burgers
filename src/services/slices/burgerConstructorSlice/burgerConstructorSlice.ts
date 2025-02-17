@@ -5,15 +5,14 @@ import {
   PayloadAction
 } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
-import { swapArray } from '../../utils/array';
-import { stat } from 'fs';
+import { swapArray } from '../../../utils/array';
 
 export interface BurgerConstructorState {
   bun: TConstructorIngredient | null;
   ingredients: TConstructorIngredient[];
 }
 
-const initialState: BurgerConstructorState = {
+export const initialState: BurgerConstructorState = {
   bun: null,
   ingredients: []
 };

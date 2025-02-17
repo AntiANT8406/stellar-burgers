@@ -7,13 +7,13 @@ import { IngredientType, TIngredient } from '@utils-types';
 
 import { getIngredientsApi } from '@api';
 
-interface IngredientsState {
+export interface IngredientsState {
   ingredients: TIngredient[];
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
   ingredients: [],
   isLoading: false,
   error: null
@@ -37,6 +37,7 @@ const ingredientsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredients.pending, (state) => {
+        state.error = null;
         state.isLoading = true;
       })
       .addCase(fetchIngredients.fulfilled, (state, action) => {

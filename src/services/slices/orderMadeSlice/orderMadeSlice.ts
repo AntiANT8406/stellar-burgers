@@ -7,13 +7,13 @@ export const makeOrderThunk = createAsyncThunk(
   async (data: string[]) => await orderBurgerApi(data)
 );
 
-type TOrderMadeState = {
+export type TOrderMadeState = {
   orderRequest: boolean;
   orderData: TOrder | null;
   name: string;
 };
 
-const initialState: TOrderMadeState = {
+export const initialState: TOrderMadeState = {
   orderRequest: false,
   orderData: null,
   name: ''

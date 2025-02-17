@@ -9,7 +9,6 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { deleteCookie, setCookie } from '../../utils/cookie';
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
@@ -37,13 +36,13 @@ export const updateUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk('user/logoutUser', logoutApi);
 
-type TUserState = {
+export type TUserState = {
   isAuthChecked: boolean;
   user: TUser | null;
   error: string | null;
 };
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   isAuthChecked: false,
   user: null,
   error: null
@@ -70,8 +69,6 @@ const userSlice = createSlice({
       state.error = null;
       state.user = action.payload.user;
       state.isAuthChecked = true;
-      setCookie('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
     });
     builder.addCase(loginUser.pending, (state) => {
       state.error = null;
@@ -83,14 +80,13 @@ const userSlice = createSlice({
       state.error = null;
       state.user = action.payload.user;
       state.isAuthChecked = true;
-      setCookie('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
     });
     builder.addCase(getUser.pending, (state) => {
       state.error = null;
     });
 
-    builder.addCase(getUser.rejected, (state) => {
+    builder.addCase(getUser.rejected, (state, action) => {
+      state.error = action.error.message || 'failed to get user';
       state.isAuthChecked = true;
     });
     builder.addCase(getUser.fulfilled, (state, action) => {
@@ -99,8 +95,6 @@ const userSlice = createSlice({
     });
     builder.addCase(logoutUser.fulfilled, (sate) => {
       sate.user = null;
-      deleteCookie('accessToken');
-      localStorage.removeItem('refreshToken');
     });
     builder.addCase(updateUser.pending, (state) => {
       state.error = null;
